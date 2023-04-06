@@ -60,23 +60,23 @@ body {
 }
 
 .message {
-  width: 85%;
+  width: 90%;
   height: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
   background-color: rgb(240, 231, 97);
   padding: 0.5rem;
   border-radius: 1rem;
 }
 .message audio {
-  width: 80%;
+  width: 85%;
   height: 100%;
 }
 
 .text-message {
-  width: 85%;
+  width: 90%;
   height: auto;
   display: flex;
   justify-content: space-between;
@@ -94,7 +94,7 @@ body {
 }
 
 .img-message {
-  width: 85%;
+  width: 90%;
   height: auto;
   display: flex;
   justify-content: space-between;
@@ -136,7 +136,7 @@ body {
   width: 100%;
   padding: 1rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   gap: 1rem;
   background-color: rgb(243, 198, 93);
@@ -145,10 +145,34 @@ body {
 .upload-image,
 .record {
   width: 10%;
+  height: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.record {
+  transition: width 0.4s ease-in-out;
+  height: 45px;
 }
 .upload-image img,
 .record img {
   width: 100%;
+}
+.record {
+  padding-inline: 0.4rem;
+  padding-block: 0.2rem;
+  border-radius: 0.9rem;
+}
+
+.stop-btn {
+  animation: fade 0.8s infinite ease-in-out;
+  transition: display 0.3s 1s ease;
+}
+
+@keyframes fade {
+  50% {
+    opacity: 0;
+  }
 }
 
 .input-text {
@@ -165,7 +189,7 @@ body {
 }
 
 .record img {
-  width: 120%;
+  width: 33px;
   cursor: pointer;
 }
 
