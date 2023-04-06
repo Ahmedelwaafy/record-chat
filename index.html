@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recording</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="index.js"></script>
+</head>
+
+<body>
+    <div class="chat-wrapper">
+        <div class="chat-icon">
+            <img src="./chat.svg" alt="">
+        </div>
+        <div class="chat-fixed hide">
+            <div class="chat-area">
+                <div class="text-message">
+<p>Add Your Voice, Text, or Image Message</p>                    <div class="user-img">
+                        <img src="./user.svg" alt="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-inputs">
+                <div class="upload-image">
+                    <input type="file" accept="image/*" id="embed-img"
+                    capture
+                    >
+                    <label for="embed-img">
+                        <img class="upload" src="./upload.svg" alt="">
+                    </label>
+                </div>
+                <div class="input-text">
+                    <input type="text">
+                </div>
+                <div class="record">
+                    <img class="record-btn " src="./record.svg" alt="">
+                    <img class=" stop-btn hide" src="./stop.svg" alt="">
+                    <button class=" send hide" type="submit"><img src="./send.svg" alt=""></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
