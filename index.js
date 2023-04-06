@@ -121,7 +121,7 @@ function stopRecording() {
       URL.createObjectURL(blob) +
       `" type="video/webm"></audio>
                     <div class="user-img">
-                        <img src="./user.svg" >
+                        <img src="./assets/user.svg" >
                     </div>
 `;
     chatArea.appendChild(newMessage);
@@ -176,7 +176,7 @@ input.addEventListener("keyup", (e) => toggleRecordSend(e));
 function sendTextOrImage() {
   record.classList.remove("hide");
   sendBtn.classList.add("hide");
-    imgGroupWrapper.classList.addg("hide");
+    imgGroupWrapper.classList.add("hide");
   let text = input.value;
   let imgFiles = embedImgInput.files;
 
@@ -190,7 +190,7 @@ function sendTextOrImage() {
       `</p>
      
                     <div class="user-img">
-                        <img src="./user.svg" >
+                        <img src="./assets/user.svg" >
                     </div>
 `;
     chatArea.appendChild(textMessage);
@@ -208,7 +208,7 @@ function sendTextOrImage() {
       `" >
 
                         <div class="user-img">
-                            <img src="./user.svg" >
+                            <img src="./assets/user.svg" >
                          </div>
 `;
     chatArea.appendChild(imgMessage);
