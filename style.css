@@ -39,6 +39,8 @@ body {
 
 @media screen and (max-width: 550px) {
   .chat-fixed {
+    width: 300px;
+
     right: 20px;
     bottom: 150px;
   }
