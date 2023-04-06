@@ -6,18 +6,22 @@ const input = document.querySelector(".input-text input");
 const uploadBtn = document.querySelector(".upload");
 const sendBtn = document.querySelector(".send");
 const embedImgInput = document.querySelector("#embed-img");
-const chat = document.querySelector(".chat-icon");
+const showChatBtn = document.querySelector(".chat-icon");
 const chatFixed = document.querySelector(".chat-fixed");
 const recordArea = document.querySelector(".record");
 const inputArea = document.querySelector(".input-text");
 const uploadArea = document.querySelector(".upload-image");
 const timer = document.querySelector(".timer");
+const imgGroupWrapper = document.querySelector(".img-group-wrapper");
 
+//timer variables
 let seconds = 1;
 let minutes = 0;
 let secondsWithZero;
 let minutesdWithZero;
 let counter;
+
+//recording variables
 let showStopCloseBtns;
 let items = [];
 let recorder;
@@ -25,18 +29,17 @@ let stream;
 
 function startRecording() {
   record.classList.toggle("hide");
-  
+
   input.setAttribute("disabled", "");
   recordArea.style.width = "100%";
   recordArea.style.backgroundColor = "#cba4f0";
   inputArea.style.display = "none";
   uploadArea.style.display = "none";
   stop.classList.toggle("hide");
-  showStopCloseBtns=setTimeout(() => {
+  showStopCloseBtns = setTimeout(() => {
     close.classList.toggle("hide");
     timer.classList.toggle("hide");
-
-}, 1000);
+  }, 1000);
 
   //timer
   counter = setInterval(() => {
@@ -49,7 +52,7 @@ function startRecording() {
         clearInterval(counter);
         seconds = 1;
         minutes = 0;
-        timer.innerHTML ="00:01";
+        timer.innerHTML = "00:01";
         timer.classList.toggle("hide");
       }
     }
@@ -99,10 +102,9 @@ function stopRecording() {
   clearInterval(counter);
   seconds = 1;
   minutes = 0;
-          timer.innerHTML = "00:01";
+  timer.innerHTML = "00:01";
 
   timer.classList.toggle("hide");
-
 
   recorder.stop();
 
@@ -128,7 +130,7 @@ function stopRecording() {
   };
 }
 
-function closeRecording() {
+function cancelRecording() {
   record.classList.toggle("hide");
   stop.classList.toggle("hide");
   input.removeAttribute("disabled");
@@ -142,7 +144,7 @@ function closeRecording() {
   clearInterval(counter);
   seconds = 1;
   minutes = 0;
-          timer.innerHTML = "00:01";
+  timer.innerHTML = "00:01";
 
   timer.classList.toggle("hide");
 
@@ -154,19 +156,11 @@ function closeRecording() {
   };
 }
 
+//event listeners
 record.addEventListener("click", startRecording);
 stop.addEventListener("click", stopRecording);
-close.addEventListener("click", closeRecording);
-
-uploadBtn.addEventListener("click", () => {
-  record.classList.add("hide");
-  sendBtn.classList.remove("hide");
-});
-
-sendBtn.addEventListener("click", () => {
-  record.classList.remove("hide");
-  sendBtn.classList.add("hide");
-});
+close.addEventListener("click", cancelRecording);
+showChatBtn.addEventListener("click", () => chatFixed.classList.toggle("hide"));
 
 function toggleRecordSend(e) {
   if (e.target.value !== "") {
@@ -180,6 +174,9 @@ function toggleRecordSend(e) {
 input.addEventListener("keyup", (e) => toggleRecordSend(e));
 
 function sendTextOrImage() {
+  record.classList.remove("hide");
+  sendBtn.classList.add("hide");
+    imgGroupWrapper.classList.addg("hide");
   let text = input.value;
   let imgFiles = embedImgInput.files;
 
@@ -219,4 +216,35 @@ function sendTextOrImage() {
 }
 
 sendBtn.addEventListener("click", sendTextOrImage);
-chat.addEventListener("click", () => chatFixed.classList.toggle("hide"));
+
+embedImgInput.addEventListener("change", handleEmbedImgInput);
+
+function handleEmbedImgInput() {
+
+  let imgFiles = embedImgInput.files;
+  if (imgFiles.length > 0) {
+    console.log(imgFiles);
+    record.classList.add("hide");
+    sendBtn.classList.remove("hide");
+    imgGroupWrapper.classList.remove("hide");
+
+    Array.from(imgFiles).forEach((img) => {
+      let imgSrc = URL.createObjectURL(img);
+      imgContainer = document.createElement("div");
+      imgContainer.classList.add("img-container");
+      imgContainer.innerHTML =
+        `
+                <section>
+
+                            <img src="` +
+        imgSrc +
+        `" >
+                </section>
+
+                <button>
+                            <img src="./assets/cancel-image.svg" >
+                </button>`;
+      imgGroupWrapper.appendChild(imgContainer);
+    });
+  }
+}

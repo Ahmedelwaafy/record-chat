@@ -20,6 +20,7 @@ body {
   background-color: white;
   border-radius: 50%;
   cursor: pointer;
+  z-index: 100;
 }
 
 .chat-icon img {
@@ -35,6 +36,7 @@ body {
   padding: 1rem;
   background-color: white;
   border-radius: 1rem;
+  z-index: 100;
 }
 
 @media screen and (max-width: 550px) {
@@ -132,6 +134,7 @@ body {
 }
 
 .chat-inputs {
+  position: relative;
   height: 20%;
   width: 100%;
   padding: 1rem;
@@ -197,14 +200,69 @@ body {
   cursor: pointer;
 }
 
-.hide {
-  display: none;
-}
+
 
 .send {
   background-color: transparent;
 }
 
 #embed-img {
+  display: none;
+}
+
+.img-group-wrapper {
+  position: absolute;
+  width: 70%;
+  height: 100%;
+  left: 15%;
+  background-color: burlywood;
+  top: 0;
+  bottom: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  padding-block: 0.4rem;
+  padding-inline: 1rem;
+  z-index: 10;
+  gap: 0.5rem;
+}
+
+.img-group-wrapper div  {
+  position: relative;
+  
+}
+.img-group-wrapper div section {
+  position: relative;
+  width: 50px;
+  max-height: 50px;
+  overflow: hidden;
+  border-radius: 0.9rem;
+}
+.img-group-wrapper div section img {
+  width: 100%;
+  object-fit: contain;
+}
+
+.img-group-wrapper div button {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  background-color: white;
+  top: -2px;
+  right: -2px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.img-group-wrapper div button img {
+  width: 100%;
+  
+  
+}
+
+
+.hide {
   display: none;
 }
