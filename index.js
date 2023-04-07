@@ -173,12 +173,15 @@ function toggleRecordSend(e) {
 }
 input.addEventListener("keyup", (e) => toggleRecordSend(e));
 
+let filterIndex;
+let currentFiles;
+let latestImgFiles; //this is the last modified array either from the first embedding time or from changing after each splice/img cancelation, and also this is the array which will be sent to the sever
+
 function sendTextOrImage() {
   record.classList.remove("hide");
   sendBtn.classList.add("hide");
   imgGroupWrapper.classList.add("hide");
   let text = input.value;
-  let imgFiles = embedImgInput.files;
 
   if (text !== "") {
     textMessage = document.createElement("div");
@@ -197,8 +200,8 @@ function sendTextOrImage() {
     input.value = "";
   }
 
-  if (imgFiles.length > 0) {
-    let imgsrc = URL.createObjectURL(embedImgInput.files[0]);
+  if (latestImgFiles.length > 0) {
+    let imgsrc = URL.createObjectURL(latestImgFiles[0]);
     imgMessage = document.createElement("div");
     imgMessage.classList.add("img-message");
     imgMessage.innerHTML =
@@ -212,16 +215,13 @@ function sendTextOrImage() {
                          </div>
 `;
     chatArea.appendChild(imgMessage);
+    latestImgFiles = [];
   }
 }
 
 sendBtn.addEventListener("click", sendTextOrImage);
 
 embedImgInput.addEventListener("change", handleEmbedImgInput);
-
-let filterIndex;
-let currentFiles;
-let latestImgFiles; //this is the last modified array either from the first embedding time or from changing after each splice/img cancelation, and also this is the array which will be sent to the sever
 
 function cancelImage(thi) {
   filterIndex = thi.dataset.index;
@@ -262,16 +262,20 @@ function cancelImage(thi) {
 }
 
 function handleEmbedImgInput() {
+  console.log(embedImgInput.files);
   currentFiles = Array.from(embedImgInput.files);
-  latestImgFiles = currentFiles;
+  console.log(currentFiles);
 
-  if (currentFiles.length > 0) {
+  latestImgFiles = currentFiles;
+  console.log(latestImgFiles);
+
+  if (latestImgFiles.length > 0) {
     record.classList.add("hide");
     sendBtn.classList.remove("hide");
     imgGroupWrapper.classList.remove("hide");
 
-    currentFiles.forEach((img) => {
-      let index = currentFiles.indexOf(img);
+    latestImgFiles.forEach((img) => {
+      let index = latestImgFiles.indexOf(img);
 
       let imgSrc = URL.createObjectURL(img);
       imgContainer = document.createElement("div");
