@@ -220,21 +220,21 @@ sendBtn.addEventListener("click", sendTextOrImage);
 embedImgInput.addEventListener("change", handleEmbedImgInput);
 
 let filterIndex;
+let currentFiles;
+let latestImgFiles; //this is the last modified array either from the first embedding time or from changing after each splice/img cancelation, and also this is the array which will be sent to the sever
 
 function cancelImage(thi) {
   filterIndex = thi.dataset.index;
   console.log(filterIndex);
   imgGroupWrapper.innerHTML = "";
-  let Files = Array.from(embedImgInput.files);
 
-  let imgFiles = Files.filter((item, index) => index !== parseInt(filterIndex));
+  currentFiles.splice(filterIndex, 1);
+  latestImgFiles = currentFiles;
+  console.log(embedImgInput.currentFiles);
+  console.log(currentFiles);
 
-  console.log(embedImgInput.files);
-  console.log(imgFiles);
-  if (imgFiles.length > 0) {
-    imgFiles.forEach((img) => {
-      let index = imgFiles.indexOf(img);
-
+  if (currentFiles.length > 0) {
+    currentFiles.forEach((img, index) => {
       let imgSrc = URL.createObjectURL(img);
       imgContainer = document.createElement("div");
       imgContainer.classList.add("img-container");
@@ -254,21 +254,24 @@ function cancelImage(thi) {
                 </button>`;
       imgGroupWrapper.appendChild(imgContainer);
     });
+  } else {
+    record.classList.remove("hide");
+    sendBtn.classList.add("hide");
+    imgGroupWrapper.classList.add("hide");
   }
 }
 
 function handleEmbedImgInput() {
-  let Files = Array.from(embedImgInput.files);
-  let imgFiles = Files;
-  if (imgFiles.length > 0) {
-    //console.log(imgFiles);
+  currentFiles = Array.from(embedImgInput.files);
+  latestImgFiles = currentFiles;
 
+  if (currentFiles.length > 0) {
     record.classList.add("hide");
     sendBtn.classList.remove("hide");
     imgGroupWrapper.classList.remove("hide");
 
-    imgFiles.forEach((img) => {
-      let index = imgFiles.indexOf(img);
+    currentFiles.forEach((img) => {
+      let index = currentFiles.indexOf(img);
 
       let imgSrc = URL.createObjectURL(img);
       imgContainer = document.createElement("div");
