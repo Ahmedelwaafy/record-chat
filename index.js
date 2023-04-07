@@ -178,6 +178,7 @@ let currentFiles;
 let latestImgFiles; //this is the last modified array either from the first embedding time or from changing after each splice/img cancelation, and also this is the array which will be sent to the sever
 
 function sendTextOrImage() {
+
   record.classList.remove("hide");
   sendBtn.classList.add("hide");
   imgGroupWrapper.classList.add("hide");
@@ -215,7 +216,8 @@ function sendTextOrImage() {
                          </div>
 `;
     chatArea.appendChild(imgMessage);
-    latestImgFiles = [];
+      imgGroupWrapper.innerHTML = "";
+
   }
 }
 
