@@ -176,7 +176,7 @@ input.addEventListener("keyup", (e) => toggleRecordSend(e));
 function sendTextOrImage() {
   record.classList.remove("hide");
   sendBtn.classList.add("hide");
-    imgGroupWrapper.classList.add("hide");
+  imgGroupWrapper.classList.add("hide");
   let text = input.value;
   let imgFiles = embedImgInput.files;
 
@@ -219,16 +219,22 @@ sendBtn.addEventListener("click", sendTextOrImage);
 
 embedImgInput.addEventListener("change", handleEmbedImgInput);
 
-function handleEmbedImgInput() {
+let filterIndex;
 
-  let imgFiles = embedImgInput.files;
+function cancelImage(thi) {
+  filterIndex = thi.dataset.index;
+  console.log(filterIndex);
+  imgGroupWrapper.innerHTML = "";
+  let Files = Array.from(embedImgInput.files);
+
+  let imgFiles = Files.filter((item, index) => index !== parseInt(filterIndex));
+
+  console.log(embedImgInput.files);
+  console.log(imgFiles);
   if (imgFiles.length > 0) {
-    console.log(imgFiles);
-    record.classList.add("hide");
-    sendBtn.classList.remove("hide");
-    imgGroupWrapper.classList.remove("hide");
+    imgFiles.forEach((img) => {
+      let index = imgFiles.indexOf(img);
 
-    Array.from(imgFiles).forEach((img) => {
       let imgSrc = URL.createObjectURL(img);
       imgContainer = document.createElement("div");
       imgContainer.classList.add("img-container");
@@ -241,8 +247,45 @@ function handleEmbedImgInput() {
         `" >
                 </section>
 
-                <button>
-                            <img src="./assets/cancel-image.svg" >
+                <button onclick="cancelImage(this)"  data-index="` +
+        index +
+        `">
+                            <img  src="./assets/cancel-image.svg" >
+                </button>`;
+      imgGroupWrapper.appendChild(imgContainer);
+    });
+  }
+}
+
+function handleEmbedImgInput() {
+  let Files = Array.from(embedImgInput.files);
+  let imgFiles = Files;
+  if (imgFiles.length > 0) {
+    //console.log(imgFiles);
+
+    record.classList.add("hide");
+    sendBtn.classList.remove("hide");
+    imgGroupWrapper.classList.remove("hide");
+
+    imgFiles.forEach((img) => {
+      let index = imgFiles.indexOf(img);
+
+      let imgSrc = URL.createObjectURL(img);
+      imgContainer = document.createElement("div");
+      imgContainer.classList.add("img-container");
+      imgContainer.innerHTML =
+        `
+                <section>
+
+                            <img src="` +
+        imgSrc +
+        `" >
+                </section>
+
+                <button onclick="cancelImage(this)"  data-index="` +
+        index +
+        `">
+                            <img  src="./assets/cancel-image.svg" >
                 </button>`;
       imgGroupWrapper.appendChild(imgContainer);
     });

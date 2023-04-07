@@ -223,9 +223,17 @@ body {
   display: flex;
   flex-wrap: wrap;
   padding-block: 0.4rem;
-  padding-inline: 1rem;
+  padding-inline-start: 1rem;
   z-index: 10;
   gap: 0.5rem;
+}
+
+@media screen and (max-width:550px) {
+  .img-group-wrapper {
+  padding-inline-start: 0.7rem;
+
+}
+  
 }
 
 .img-group-wrapper div  {
