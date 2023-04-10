@@ -175,10 +175,9 @@ input.addEventListener("keyup", (e) => toggleRecordSend(e));
 
 let filterIndex;
 let currentFiles;
-let latestImgFiles; //this is the last modified array either from the first embedding time or from changing after each splice/img cancelation, and also this is the array which will be sent to the sever
+let latestImgFiles = []; //this is the last modified array either from the first embedding time or from changing after each splice/img cancelation, and also this is the array which will be sent to the sever
 
 function sendTextOrImage() {
-
   record.classList.remove("hide");
   sendBtn.classList.add("hide");
   imgGroupWrapper.classList.add("hide");
@@ -202,22 +201,24 @@ function sendTextOrImage() {
   }
 
   if (latestImgFiles.length > 0) {
-    let imgsrc = URL.createObjectURL(latestImgFiles[0]);
-    imgMessage = document.createElement("div");
-    imgMessage.classList.add("img-message");
-    imgMessage.innerHTML =
-      `
+    latestImgFiles.forEach((img, index) => {
+      let imgsrc = URL.createObjectURL(latestImgFiles[index]);
+      imgMessage = document.createElement("div");
+      imgMessage.classList.add("img-message");
+      imgMessage.innerHTML =
+        `
          <img class="img"  src="` +
-      imgsrc +
-      `" >
+        imgsrc +
+        `" >
 
                         <div class="user-img">
                             <img src="./assets/user.svg" >
                          </div>
 `;
-    chatArea.appendChild(imgMessage);
-      imgGroupWrapper.innerHTML = "";
-
+      chatArea.appendChild(imgMessage);
+    });
+    latestImgFiles = [];
+    imgGroupWrapper.innerHTML = "";
   }
 }
 
@@ -230,13 +231,13 @@ function cancelImage(thi) {
   console.log(filterIndex);
   imgGroupWrapper.innerHTML = "";
 
-  currentFiles.splice(filterIndex, 1);
-  latestImgFiles = currentFiles;
+  latestImgFiles.splice(filterIndex, 1);
+  //latestImgFiles = currentFiles;
   console.log(embedImgInput.currentFiles);
   console.log(currentFiles);
 
-  if (currentFiles.length > 0) {
-    currentFiles.forEach((img, index) => {
+  if (latestImgFiles.length > 0) {
+    latestImgFiles.forEach((img, index) => {
       let imgSrc = URL.createObjectURL(img);
       imgContainer = document.createElement("div");
       imgContainer.classList.add("img-container");
@@ -262,13 +263,29 @@ function cancelImage(thi) {
     imgGroupWrapper.classList.add("hide");
   }
 }
+//the input type file doesn't listen to the new added image so we need to create a container array and push the new images to it then map over the container array
 
 function handleEmbedImgInput() {
+  //empty the previous images in the img group as we will map of all images again for each change in the input
+  imgGroupWrapper.innerHTML = "";
+
   console.log(embedImgInput.files);
+  //convert the fil list into an array
   currentFiles = Array.from(embedImgInput.files);
   console.log(currentFiles);
+  //logic for not pushing an already exist image
+  let exist = false;
+  currentFiles.forEach((newItem) => {
+    latestImgFiles.forEach((oldItem) => {
+      if (oldItem.name == newItem.name) {
+        exist = true;
+      }
+    });
+    if (!exist) {
+      latestImgFiles.push(newItem);
+    }
+  });
 
-  latestImgFiles = currentFiles;
   console.log(latestImgFiles);
 
   if (latestImgFiles.length > 0) {
